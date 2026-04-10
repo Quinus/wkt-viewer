@@ -35,10 +35,10 @@ export function WktCard({
 
   const statusClass =
     entry.result.kind === "idle"
-      ? "status-idle"
+      ? "bg-gray-500/10 text-gray-500"
       : entry.result.kind === "valid"
-        ? "status-valid"
-        : "status-invalid";
+        ? "bg-emerald-500/10 text-emerald-500"
+        : "bg-red-500/10 text-red-500";
 
   const statusText =
     entry.result.kind === "idle"
@@ -48,35 +48,32 @@ export function WktCard({
         : "Invalid";
 
   return (
-    <div className="wkt-card">
-      <div className="wkt-card-header">
-        <span className="wkt-color-dot" style={{ background: color }} />
+    <div className="bg-white border border-black/8 rounded-xl mb-2 overflow-hidden last:mb-0">
+      <div className="flex items-center gap-1.5 px-2.5 py-2">
+        <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: color }} />
         <button
-          className="collapse-btn"
+          className="flex items-center justify-center size-[22px] border-none bg-transparent rounded text-gray-500 cursor-pointer flex-shrink-0 hover:bg-black/5"
           onClick={() => onToggleCollapse(id)}
           title={collapsed ? "Expand" : "Collapse"}
         >
-          <CaretDownIcon
-            size={14}
-            weight="fill"
-            style={{
-              transform: collapsed ? "rotate(-90deg)" : "rotate(0deg)",
-              transition: "transform 0.15s ease",
-            }}
-          />
+          <span className={`transition-transform duration-150 ${collapsed ? "-rotate-90" : ""}`}>
+            <CaretDownIcon size={14} weight="fill" />
+          </span>
         </button>
         <input
-          className="wkt-label-input"
+          className="flex-1 min-w-0 border-none bg-transparent text-sm font-medium text-gray-800 outline-none placeholder:text-gray-500 placeholder:font-normal"
           type="text"
           value={entry.label}
           onChange={(e) => updateEntryLabel(id, e.target.value)}
           placeholder="Label"
           spellCheck={false}
         />
-        <span className={`wkt-status ${statusClass}`}>{statusText}</span>
-        <div className="wkt-card-actions">
+        <span className={`text-xs font-medium px-1.5 py-0.5 rounded flex-shrink-0 ${statusClass}`}>
+          {statusText}
+        </span>
+        <div className="flex gap-0.5 ml-auto">
           <button
-            className="icon-btn"
+            className="flex items-center justify-center size-7 border-none bg-transparent rounded-md text-gray-500 cursor-pointer transition-all duration-150 hover:bg-black/5 hover:text-gray-800"
             onClick={() => toggleVisibility(id)}
             title={entry.visible ? "Hide from map" : "Show on map"}
             aria-label={entry.visible ? "Hide from map" : "Show on map"}
@@ -85,7 +82,7 @@ export function WktCard({
           </button>
           {entry.result.kind === "valid" && (
             <button
-              className="icon-btn"
+              className="flex items-center justify-center size-7 border-none bg-transparent rounded-md text-gray-500 cursor-pointer transition-all duration-150 hover:bg-black/5 hover:text-gray-800"
               onClick={() => onZoom(id)}
               title="Zoom to fit"
               aria-label="Zoom to fit"
@@ -95,7 +92,7 @@ export function WktCard({
           )}
           {canRemove && (
             <button
-              className="icon-btn icon-btn-danger"
+              className="flex items-center justify-center w-7 h-7 border-none bg-transparent rounded-md text-gray-500 cursor-pointer transition-all duration-150 hover:bg-red-500/10 hover:text-red-500"
               onClick={() => removeEntry(id)}
               title="Remove"
               aria-label="Remove"
@@ -107,10 +104,10 @@ export function WktCard({
       </div>
       {!collapsed && (
         <textarea
-          className="wkt-input"
+          className="w-full min-h-20 px-3 py-2.5 border-none border-t border-black/8 bg-slate-50/50 font-mono text-xs leading-relaxed text-gray-800 resize-y outline-none box-border placeholder:text-gray-500 placeholder:opacity-70 focus:bg-slate-50/80"
           value={entry.value}
           onChange={(e) => updateEntryValue(id, e.target.value)}
-          placeholder="POINT(4.5 52.0)\nLINESTRING(0 0, 10 10)\nPOLYGON((0 0, 10 0, 10 10, 0 10, 0 0))"
+          placeholder="POINT(4.5 52.0)&#10;LINESTRING(0 0, 10 10)&#10;POLYGON((0 0, 10 0, 10 10, 0 10, 0 0))"
           spellCheck={false}
         />
       )}

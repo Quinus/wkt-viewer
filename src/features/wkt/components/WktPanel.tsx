@@ -79,18 +79,17 @@ export function WktPanel({ onZoom }: WktPanelProps) {
   return (
     <div
       ref={panelRef}
-      id="wkt-panel"
-      className={dragging ? "dragging" : ""}
+      className={`fixed top-4 left-4 w-85 max-h-[calc(100vh-32px)] flex flex-col bg-white/92 backdrop-blur-xl border border-black/8 rounded-2xl shadow-lg overflow-hidden touch-none select-none z-10 ${dragging ? "cursor-grabbing opacity-90" : ""}`}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
     >
-      <div id="panel-toolbar">
-        <span id="panel-title">WKT Viewer</span>
-        <div id="panel-toolbar-actions">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-black/8 cursor-grab active:cursor-grabbing">
+        <span className="font-semibold text-sm text-gray-800">WKT Viewer</span>
+        <div className="flex gap-1">
           <button
-            className="icon-btn"
+            className="flex items-center justify-center size-7 border-none bg-transparent rounded-md text-gray-500 cursor-pointer transition-all duration-150 hover:bg-black/5 hover:text-gray-800"
             onClick={toggleCollapseAll}
             title={allCollapsed ? "Expand all" : "Collapse all"}
             aria-label={allCollapsed ? "Expand all" : "Collapse all"}
@@ -102,7 +101,7 @@ export function WktPanel({ onZoom }: WktPanelProps) {
             )}
           </button>
           <button
-            className="icon-btn"
+            className="flex items-center justify-center size-7 border-none bg-transparent rounded-md text-gray-500 cursor-pointer transition-all duration-150 hover:bg-black/5 hover:text-gray-800"
             onClick={() => useWktStore.getState().addEntry()}
             title="Add WKT string"
             aria-label="Add WKT string"
@@ -111,7 +110,7 @@ export function WktPanel({ onZoom }: WktPanelProps) {
           </button>
         </div>
       </div>
-      <div id="wkt-cards">
+      <div className="flex-1 overflow-y-auto p-2">
         {entries.map((entry, i) => (
           <WktCard
             key={entry.id}
