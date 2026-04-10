@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { Plus, CaretDown, CaretUp } from "@phosphor-icons/react";
+import { PlusIcon, CaretDownIcon, CaretUpIcon } from "@phosphor-icons/react";
 import { useWktStore } from "@/features/wkt/store/useWktStore";
 import { COLORS } from "@/features/wkt/utils/colors";
 import { WktCard } from "./WktCard";
@@ -95,7 +95,11 @@ export function WktPanel({ onZoom }: WktPanelProps) {
             title={allCollapsed ? "Expand all" : "Collapse all"}
             aria-label={allCollapsed ? "Expand all" : "Collapse all"}
           >
-            {allCollapsed ? <CaretUp size={16} weight="bold" /> : <CaretDown size={16} weight="bold" />}
+            {allCollapsed ? (
+              <CaretUpIcon size={16} weight="bold" />
+            ) : (
+              <CaretDownIcon size={16} weight="bold" />
+            )}
           </button>
           <button
             className="icon-btn"
@@ -103,7 +107,7 @@ export function WktPanel({ onZoom }: WktPanelProps) {
             title="Add WKT string"
             aria-label="Add WKT string"
           >
-            <Plus size={16} weight="bold" />
+            <PlusIcon size={16} weight="bold" />
           </button>
         </div>
       </div>

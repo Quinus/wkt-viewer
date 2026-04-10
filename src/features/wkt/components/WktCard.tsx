@@ -1,4 +1,10 @@
-import { CaretDown, BoundingBox, Trash, Eye, EyeClosed } from "@phosphor-icons/react";
+import {
+  CaretDownIcon,
+  BoundingBoxIcon,
+  TrashIcon,
+  EyeIcon,
+  EyeClosedIcon,
+} from "@phosphor-icons/react";
 import { useWktStore } from "@/features/wkt/store/useWktStore";
 import type { Color } from "@/features/wkt/utils/colors";
 
@@ -45,8 +51,12 @@ export function WktCard({
     <div className="wkt-card">
       <div className="wkt-card-header">
         <span className="wkt-color-dot" style={{ background: color }} />
-        <button className="collapse-btn" onClick={() => onToggleCollapse(id)} title={collapsed ? "Expand" : "Collapse"}>
-          <CaretDown
+        <button
+          className="collapse-btn"
+          onClick={() => onToggleCollapse(id)}
+          title={collapsed ? "Expand" : "Collapse"}
+        >
+          <CaretDownIcon
             size={14}
             weight="fill"
             style={{
@@ -71,11 +81,16 @@ export function WktCard({
             title={entry.visible ? "Hide from map" : "Show on map"}
             aria-label={entry.visible ? "Hide from map" : "Show on map"}
           >
-            {entry.visible ? <Eye size={16} /> : <EyeClosed size={16} />}
+            {entry.visible ? <EyeIcon size={16} /> : <EyeClosedIcon size={16} />}
           </button>
           {entry.result.kind === "valid" && (
-            <button className="icon-btn" onClick={() => onZoom(id)} title="Zoom to fit" aria-label="Zoom to fit">
-              <BoundingBox size={16} />
+            <button
+              className="icon-btn"
+              onClick={() => onZoom(id)}
+              title="Zoom to fit"
+              aria-label="Zoom to fit"
+            >
+              <BoundingBoxIcon size={16} />
             </button>
           )}
           {canRemove && (
@@ -85,7 +100,7 @@ export function WktCard({
               title="Remove"
               aria-label="Remove"
             >
-              <Trash size={16} />
+              <TrashIcon size={16} />
             </button>
           )}
         </div>
