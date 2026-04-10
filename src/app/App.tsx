@@ -85,6 +85,14 @@ export default function App() {
         })}
       </Map>
       <WktPanel onZoom={handleZoom} />
+      <a
+        href="https://github.com/Quinus"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-3 right-3 text-xs text-gray-400 hover:text-gray-600 transition-colors"
+      >
+        Made by Quinus
+      </a>
     </>
   );
 }
