@@ -29,8 +29,7 @@ export const useWktStore = create<WktStore>()(
     (set, get) => ({
       entries: [createEntry()],
 
-      addEntry: () =>
-        set((state) => ({ entries: [...state.entries, createEntry()] })),
+      addEntry: () => set((state) => ({ entries: [...state.entries, createEntry()] })),
 
       removeEntry: (id: string) =>
         set((state) => {
@@ -41,22 +40,18 @@ export const useWktStore = create<WktStore>()(
       updateEntryValue: (id: string, value: string) =>
         set((state) => ({
           entries: state.entries.map((e) =>
-            e.id === id ? { ...e, value, result: parseWkt(value) } : e
+            e.id === id ? { ...e, value, result: parseWkt(value) } : e,
           ),
         })),
 
       updateEntryLabel: (id: string, label: string) =>
         set((state) => ({
-          entries: state.entries.map((e) =>
-            e.id === id ? { ...e, label } : e
-          ),
+          entries: state.entries.map((e) => (e.id === id ? { ...e, label } : e)),
         })),
 
       toggleVisibility: (id: string) =>
         set((state) => ({
-          entries: state.entries.map((e) =>
-            e.id === id ? { ...e, visible: !e.visible } : e
-          ),
+          entries: state.entries.map((e) => (e.id === id ? { ...e, visible: !e.visible } : e)),
         })),
 
       getEntryById: (id: string) => get().entries.find((e) => e.id === id),
@@ -64,12 +59,15 @@ export const useWktStore = create<WktStore>()(
     {
       name: "wkt-viewer-entries",
       partialize: (state) => ({
-        entries: state.entries.map((e) => ({
-          id: e.id,
-          label: e.label,
-          value: e.value,
-          visible: e.visible,
-        } satisfies StoredEntry)),
+        entries: state.entries.map(
+          (e) =>
+            ({
+              id: e.id,
+              label: e.label,
+              value: e.value,
+              visible: e.visible,
+            }) satisfies StoredEntry,
+        ),
       }),
       onRehydrateStorage: () => (state) => {
         if (state) {
@@ -79,6 +77,6 @@ export const useWktStore = create<WktStore>()(
           }));
         }
       },
-    }
-  )
+    },
+  ),
 );

@@ -1,23 +1,16 @@
 {
   "name": "wkt-viewer",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "@tailwindcss/vite": "^4.2.2",
-    "@types/maplibre-gl": "^1.13.2",
-    "@types/node": "^25.6.0",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "@types/terraformer__wkt": "^2.0.3",
-    "@vitejs/plugin-react": "^6.0.1",
-    "typescript": "~6.0.2",
-    "vite": "^8.0.4"
+    "preview": "vite preview",
+    "lint": "oxlint --config .oxlintrc.json",
+    "lint:fix": "oxlint --config .oxlintrc.json --fix",
+    "format": "oxfmt --config .oxfmt.json",
+    "format:check": "oxfmt --config .oxfmt.json --check"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
@@ -27,5 +20,18 @@
     "react-dom": "^19.2.5",
     "react-map-gl": "^8.1.0",
     "zustand": "^5.0.12"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "@types/maplibre-gl": "^1.13.2",
+    "@types/node": "^25.6.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@types/terraformer__wkt": "^2.0.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "oxfmt": "^0.44.0",
+    "oxlint": "^1.59.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.0.4"
   }
 }
