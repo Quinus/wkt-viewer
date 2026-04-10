@@ -41,3 +41,7 @@ Using `@tailwindcss/vite` provides a faster development experience with better h
 
 ### Path aliases
 The `@/*` alias points to `src/*`, enabling cleaner imports like `@/features/wkt/components/WktPanel` instead of relative paths.
+
+---
+
+Made by [Quinus](https://github.com/Quinus)
