@@ -13,4 +13,6 @@ jobs:
         with:
           node-version: lts
           cache: true
+          run-install: false
+      - run: npm ci
       - run: vp check
