@@ -14,7 +14,8 @@ export default function App() {
   const { mapRef } = useMapController();
 
   const handleZoom = (id: string) => {
-    const entry = entries.find((e) => e.id === id);
+    // Get entry directly from store to ensure we have the latest state
+    const entry = useWktStore.getState().getEntryById(id);
     if (!entry || entry.result.kind !== "valid") return;
     const map = mapRef.current?.getMap();
     if (!map) return;

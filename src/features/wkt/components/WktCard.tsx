@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import {
   CaretDownIcon,
   BoundingBoxIcon,
@@ -30,6 +31,16 @@ export function WktCard({
   const updateEntryLabel = useWktStore((s) => s.updateEntryLabel);
   const removeEntry = useWktStore((s) => s.removeEntry);
   const toggleVisibility = useWktStore((s) => s.toggleVisibility);
+  const wasValidRef = useRef(false);
+
+  // Auto-zoom when entry transitions from non-valid to valid
+  useEffect(() => {
+    const isValid = entry?.result.kind === "valid";
+    if (!wasValidRef.current && isValid) {
+      onZoom(id);
+    }
+    wasValidRef.current = isValid;
+  }, [entry?.result.kind, id, onZoom]);
 
   if (!entry) return null;
 
