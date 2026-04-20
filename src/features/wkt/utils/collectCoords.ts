@@ -1,4 +1,4 @@
-export function collectCoords(geom: GeoJSON.Geometry, out: number[][]) {
+export function collectCoords(geom: GeoJSON.Geometry, out: number[][]): void {
   if (!geom) return;
   switch (geom.type) {
     case "Point":

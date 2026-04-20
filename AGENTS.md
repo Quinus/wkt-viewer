@@ -1,20 +1,30 @@
 # Agent Instructions
 
-This file contains information for AI agents working on this codebase.
-
-## Project Overview
-
-WKT Viewer is a React-based web application for visualizing Well-Known Text (WKT) geometries on an interactive map using MapLibre GL.
+WKT Viewer - React app for visualizing Well-Known Text (WKT) geometries on an interactive map using MapLibre GL.
 
 ## Tech Stack
 
-- **Framework**: React 19 with TypeScript
-- **Build Tool**: Vite 8
+- **Framework**: React 19 with TypeScript (strict)
+- **Build Tool**: Vite 8 via `vite-plus` (vp CLI)
 - **Map Rendering**: MapLibre GL + react-map-gl
-- **State Management**: Zustand
-- **Styling**: Tailwind CSS 4 (via @tailwindcss/vite)
+- **State Management**: Zustand + zundo (undo/redo)
+- **Styling**: Tailwind CSS 4 (@tailwindcss/vite)
 - **Icons**: @phosphor-icons/react
 - **WKT Parsing**: @terraformer/wkt
+- **Drag-and-Drop**: @dnd-kit
+
+## Commands
+
+All commands use `vp` (vite-plus), not `npm run`:
+
+```bash
+vp dev      # Start dev server
+vp build    # Production build
+vp check    # Lint + format + typecheck (run before commit)
+vp preview  # Preview production build
+```
+
+**Note**: There are no `npm run lint` or `npm run format` scripts. Use `vp check` or configure editor integration with `.oxlintrc.json` / `.oxfmt.json`.
 
 ## Development Tools
 
@@ -23,13 +33,6 @@ WKT Viewer is a React-based web application for visualizing Well-Known Text (WKT
 This project uses [oxlint](https://oxc.rs/docs/guide/usage/linter.html) for fast JavaScript/TypeScript linting.
 
 **Configuration**: `.oxlintrc.json`
-
-**Scripts**:
-
-```bash
-npm run lint      # Check for linting issues
-npm run lint:fix  # Auto-fix linting issues
-```
 
 **Enabled plugins**:
 
@@ -51,30 +54,25 @@ This project uses [oxfmt](https://oxc.rs/docs/guide/usage/formatter.html) for fa
 - Trailing commas: all
 - Print width: 100
 
-**Scripts**:
-
-```bash
-npm run format       # Format all files
-npm run format:check # Check formatting without fixing
-```
-
 ## Project Structure
 
 ```
 src/
-├── app/              # App entry point
-│   ├── App.tsx       # Root component
-│   └── main.tsx      # Entry point
-├── config/           # Configuration (map settings, etc.)
+├── app/              # Entry point (main.tsx, App.tsx)
+├── components/       # Shared UI components (src/components/ui/)
+├── config/           # Global configuration
 ├── features/         # Feature-based modules
-│   └── wkt/          # WKT feature module
-│       ├── components/   # React components
-│       ├── hooks/        # Custom hooks
-│       ├── store/        # Zustand store
-│       ├── types/        # TypeScript types
-│       └── utils/        # Utility functions
+│   └── wkt/          # WKT feature
+│       ├── components/
+│       ├── hooks/
+│       ├── store/    # Zustand store
+│       ├── types/
+│       └── utils/
+├── hooks/            # Global hooks
+├── lib/              # Library utilities
 ├── styles/           # Global styles
-└── types/            # Shared types
+├── types/            # Shared types
+└── utils/            # Global utilities
 ```
 
 ## Path Aliases
@@ -82,6 +80,14 @@ src/
 - `@/*` → `src/*`
 
 Example: `import { WktPanel } from "@/features/wkt/components/WktPanel"`
+
+## Code Style
+
+- **Formatter**: oxfmt via `vp check` (config in vite.config.ts + .oxfmt.json)
+  - Double quotes, semicolons, 2-space tabs, trailing commas
+- **Linter**: oxlint via `vp check` (config in vite.config.ts + .oxlintrc.json)
+  - Plugins: import, typescript, react
+  - No console warnings disabled
 
 ## Coding Conventions
 
@@ -95,15 +101,10 @@ Example: `import { WktPanel } from "@/features/wkt/components/WktPanel"`
    - Types/Interfaces: PascalCase
 5. **State**: Use Zustand for global state, React hooks for local state
 
-## Build Commands
+## CI
 
-```bash
-npm run dev       # Start development server
-npm run build     # Build for production
-npm run preview   # Preview production build
-```
+GitHub Actions runs `vp check` on PRs to `main`.
 
-## Git Workflow
+## State Management
 
-- Main branch: `main`
-- Format and lint code before committing
+Uses Zustand with zundo for undo/redo functionality. Store located at `src/features/wkt/store/`.

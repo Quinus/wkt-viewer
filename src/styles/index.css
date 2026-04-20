@@ -95,3 +95,54 @@ body {
 .group-body-inner {
   overflow: hidden;
 }
+
+/* Range slider custom styles */
+input[type="range"] {
+  --thumb-size: 14px;
+  --track-height: 4px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  transition: transform 0.15s ease;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  border-radius: 9999px;
+  background: white;
+  border: 1px solid #d4d4d8;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.1);
+}
+
+input[type="range"]::-moz-range-track {
+  height: var(--track-height);
+  background: #e4e4e7;
+  border-radius: 9999px;
+}
+
+/* Drag and drop styles */
+.dragging {
+  opacity: 0.4;
+  transform: scale(0.98);
+}
+
+.drag-over {
+  position: relative;
+}
+
+.drag-over::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px dashed #6366f1;
+  border-radius: 12px;
+  pointer-events: none;
+  background: rgba(99, 102, 241, 0.05);
+}
