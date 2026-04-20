@@ -1,6 +1,7 @@
-export const MAP_STYLE = "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json";
+export const MAP_STYLE = import.meta.env.VITE_MAP_STYLE_URL || "/map-style.json";
+
 export const INITIAL_VIEW_STATE = {
-  longitude: 4.4214,
-  latitude: 51.2307,
-  zoom: 13,
+  longitude: Number(import.meta.env.VITE_DEFAULT_LNG || "4.4214"),
+  latitude: Number(import.meta.env.VITE_DEFAULT_LAT || "51.2307"),
+  zoom: Number(import.meta.env.VITE_DEFAULT_ZOOM || "13"),
 } as const;
