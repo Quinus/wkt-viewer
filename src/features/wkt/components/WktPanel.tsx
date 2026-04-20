@@ -73,7 +73,7 @@ export function WktPanel({ onZoom, onZoomToBbox }: WktPanelProps) {
     previousValidIds.current = currentValidIds;
   }, [entries, onZoom]);
 
-  const toggleCollapse = useCallback((id: string) => {
+  const toggleCollapse = (id: string) => {
     setCollapsedCards((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
@@ -83,17 +83,17 @@ export function WktPanel({ onZoom, onZoomToBbox }: WktPanelProps) {
       }
       return next;
     });
-  }, []);
+  };
 
   const allCollapsed = entries.length > 0 && entries.every((e) => collapsedCards.has(e.id));
 
-  const toggleCollapseAll = useCallback(() => {
+  const toggleCollapseAll = () => {
     if (allCollapsed) {
       setCollapsedCards(new Set());
     } else {
       setCollapsedCards(new Set(entries.map((e) => e.id)));
     }
-  }, [allCollapsed, entries]);
+  };
 
   const hasAnyContent = groupedEntries.ungrouped.length > 0 || groupedEntries.groups.length > 0;
   const canRemoveEntry = useCallback((_id: string) => entries.length > 1, [entries.length]);

@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["import", "typescript", "react"],
+  "env": {
+    "browser": true,
+    "es2023": true
+  },
+  "globals": {},
+  "settings": {},
+  "rules": {
+    "eqeqeq": "error",
+    "no-debugger": "error",
+    "no-unused-vars": "error",
+    "no-console": "off",
+    "react/jsx-no-target-blank": "error"
+  }
+}

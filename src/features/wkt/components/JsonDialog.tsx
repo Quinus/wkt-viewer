@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { XIcon, CopyIcon, DownloadIcon } from "@phosphor-icons/react";
 import { useWktStore } from "@/features/wkt/store/useWktStore";
 import { exportAsJson } from "@/features/wkt/utils/export";
+import { parseWkt } from "@/features/wkt/utils/parseWkt";
 
 interface JsonDialogProps {
   open: boolean;
@@ -10,8 +11,13 @@ interface JsonDialogProps {
 
 export function JsonDialog({ open, onClose }: JsonDialogProps) {
   const entries = useWktStore((s) => s.entries);
+  const addEntries = useWktStore((s) => s.addEntries);
   const [copied, setCopied] = useState(false);
+  const [jsonValue, setJsonValue] = useState("");
+  const [groupName, setGroupName] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const jsonRef = useRef<HTMLTextAreaElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   if (!open) return null;
 
@@ -42,6 +48,50 @@ export function JsonDialog({ open, onClose }: JsonDialogProps) {
     URL.revokeObjectURL(url);
   };
 
+  const handleParse = () => {
+    if (!jsonValue.trim()) return;
+    try {
+      const parsed = JSON.parse(jsonValue);
+      const items = Array.isArray(parsed) ? parsed : [parsed];
+      const validItems: { label: string; value: string }[] = [];
+
+      for (const item of items) {
+        if (item.geo && typeof item.geo === "string") {
+          const result = parseWkt(item.geo);
+          if (result.kind === "valid") {
+            validItems.push({
+              label: item.label || item.name || item.id || result.label,
+              value: item.geo,
+            });
+          }
+        }
+      }
+
+      if (validItems.length === 0) {
+        setError("No valid WKT found in geo fields");
+        return;
+      }
+
+      const finalGroupName =
+        groupName.trim() ||
+        `Imported ${validItems.length} item${validItems.length !== 1 ? "s" : ""}`;
+
+      addEntries(validItems, finalGroupName);
+      onClose();
+    } catch {
+      setError("Invalid JSON");
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+      handleParse();
+    }
+    if (e.key === "Escape") {
+      onClose();
+    }
+  };
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
@@ -52,7 +102,7 @@ export function JsonDialog({ open, onClose }: JsonDialogProps) {
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       <div className="relative w-full max-w-lg mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden">
         <div className="flex items-center justify-between px-4 py-3 border-b border-black/8">
-          <h2 className="text-sm font-semibold text-gray-800">JSON Export</h2>
+          <h2 className="text-sm font-semibold text-gray-800">JSON Import/Export</h2>
           <button
             className="flex items-center justify-center size-7 border-none bg-transparent rounded-md text-gray-500 cursor-pointer hover:bg-black/5 hover:text-gray-800 transition-colors"
             onClick={onClose}
@@ -61,53 +111,76 @@ export function JsonDialog({ open, onClose }: JsonDialogProps) {
             <XIcon size={18} />
           </button>
         </div>
-        <div className="p-4 space-y-4">
-          {!hasEntries && (
-            <p className="text-sm text-gray-500 text-center py-4">
-              No valid geometries to export. Add some WKT first.
-            </p>
-          )}
+        <div className="p-4 space-y-3">
           {hasEntries && (
-            <>
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-xs font-medium text-gray-600">
-                    JSON ({validCount} {validCount === 1 ? "item" : "items"})
-                  </label>
-                  <div className="flex gap-1">
-                    <button
-                      className="flex items-center gap-1 px-2 py-1 text-[11px] font-medium text-gray-500 border border-black/8 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
-                      onClick={handleCopy}
-                    >
-                      <CopyIcon size={11} />
-                      {copied ? "Copied!" : "Copy"}
-                    </button>
-                    <button
-                      className="flex items-center gap-1 px-2 py-1 text-[11px] font-medium text-gray-500 border border-black/8 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
-                      onClick={handleDownload}
-                    >
-                      <DownloadIcon size={11} />
-                      Download
-                    </button>
-                  </div>
+            <div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-xs font-medium text-gray-600">
+                  Export JSON ({validCount} {validCount === 1 ? "item" : "items"})
+                </label>
+                <div className="flex gap-1">
+                  <button
+                    className="flex items-center gap-1 px-2 py-1 text-[11px] font-medium text-gray-500 border border-black/8 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                    onClick={handleCopy}
+                  >
+                    <CopyIcon size={11} />
+                    {copied ? "Copied!" : "Copy"}
+                  </button>
+                  <button
+                    className="flex items-center gap-1 px-2 py-1 text-[11px] font-medium text-gray-500 border border-black/8 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+                    onClick={handleDownload}
+                  >
+                    <DownloadIcon size={11} />
+                    Download
+                  </button>
                 </div>
-                <textarea
-                  ref={jsonRef}
-                  readOnly
-                  className="w-full h-48 px-3 py-2.5 border border-black/8 rounded-xl bg-slate-50/50 font-mono text-xs leading-relaxed text-gray-800 resize-none outline-none"
-                  value={jsonOutput}
-                  spellCheck={false}
-                />
               </div>
-            </>
+              <textarea
+                ref={jsonRef}
+                readOnly
+                className="w-full h-32 px-3 py-2.5 border border-black/8 rounded-xl bg-slate-50/50 font-mono text-xs leading-relaxed text-gray-800 resize-none outline-none"
+                value={jsonOutput}
+                spellCheck={false}
+              />
+            </div>
           )}
+          <div>
+            <label className="text-xs font-medium text-gray-600 mb-1.5 block">Import JSON</label>
+            <textarea
+              ref={textareaRef}
+              className="w-full min-h-32 px-3 py-2.5 border border-black/8 rounded-xl bg-slate-50/50 font-mono text-xs leading-relaxed text-gray-800 resize-y outline-none box-border placeholder:text-gray-500 placeholder:opacity-70 focus:border-blue-500/50 focus:bg-slate-50/80 transition-colors"
+              value={jsonValue}
+              onChange={(e) => {
+                setJsonValue(e.target.value);
+                setError(null);
+              }}
+              onKeyDown={handleKeyDown}
+              placeholder='[{ "geo": "LINESTRING (4.45 51.20, ...)", "label": "Route 1" }]'
+              spellCheck={false}
+            />
+          </div>
+          <input
+            type="text"
+            className="w-full px-3 py-2 border border-black/8 rounded-xl bg-slate-50/50 text-sm text-gray-800 outline-none placeholder:text-gray-500 focus:border-blue-500/50 focus:bg-slate-50/80 transition-colors"
+            value={groupName}
+            onChange={(e) => setGroupName(e.target.value)}
+            placeholder="Group name (optional)"
+            spellCheck={false}
+          />
+          {error && <p className="text-xs text-red-500">{error}</p>}
         </div>
-        <div className="px-4 pb-4">
+        <div className="flex gap-2 px-4 pb-4">
           <button
-            className="w-full px-4 py-2 border border-black/10 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors cursor-pointer"
+            className="flex-1 px-4 py-2 border border-black/10 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors cursor-pointer"
             onClick={onClose}
           >
-            Close
+            Cancel
+          </button>
+          <button
+            className="flex-1 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-xl transition-colors"
+            onClick={handleParse}
+          >
+            Add WKT Items
           </button>
         </div>
       </div>

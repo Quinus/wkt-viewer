@@ -1,17 +1,17 @@
 # Agent Instructions
 
-WKT Viewer - React app for visualizing Well-Known Text geometries on an interactive MapLibre GL map.
+WKT Viewer - React app for visualizing Well-Known Text (WKT) geometries on an interactive map using MapLibre GL.
 
 ## Tech Stack
 
-- React 19 + TypeScript (strict)
-- Vite 8 via `vite-plus` (vp CLI)
-- MapLibre GL + react-map-gl
-- Tailwind CSS 4 (@tailwindcss/vite)
-- Zustand + zundo (undo/redo)
-- @dnd-kit (drag-and-drop)
-- @phosphor-icons/react
-- @terraformer/wkt (WKT parsing)
+- **Framework**: React 19 with TypeScript (strict)
+- **Build Tool**: Vite 8 via `vite-plus` (vp CLI)
+- **Map Rendering**: MapLibre GL + react-map-gl
+- **State Management**: Zustand + zundo (undo/redo)
+- **Styling**: Tailwind CSS 4 (@tailwindcss/vite)
+- **Icons**: @phosphor-icons/react
+- **WKT Parsing**: @terraformer/wkt
+- **Drag-and-Drop**: @dnd-kit
 
 ## Commands
 
@@ -25,6 +25,34 @@ vp preview  # Preview production build
 ```
 
 **Note**: There are no `npm run lint` or `npm run format` scripts. Use `vp check` or configure editor integration with `.oxlintrc.json` / `.oxfmt.json`.
+
+## Development Tools
+
+### Linting (oxlint)
+
+This project uses [oxlint](https://oxc.rs/docs/guide/usage/linter.html) for fast JavaScript/TypeScript linting.
+
+**Configuration**: `.oxlintrc.json`
+
+**Enabled plugins**:
+
+- `import` - Import/export rules
+- `typescript` - TypeScript-specific rules
+- `react` - React-specific rules
+
+### Formatting (oxfmt)
+
+This project uses [oxfmt](https://oxc.rs/docs/guide/usage/formatter.html) for fast code formatting.
+
+**Configuration**: `.oxfmt.json`
+
+**Key settings**:
+
+- Semicolons: enabled
+- Single quotes: disabled (use double quotes)
+- Tab width: 2 spaces
+- Trailing commas: all
+- Print width: 100
 
 ## Project Structure
 
@@ -60,6 +88,18 @@ Example: `import { WktPanel } from "@/features/wkt/components/WktPanel"`
 - **Linter**: oxlint via `vp check` (config in vite.config.ts + .oxlintrc.json)
   - Plugins: import, typescript, react
   - No console warnings disabled
+
+## Coding Conventions
+
+1. **TypeScript**: Use strict typing, avoid `any`
+2. **React**: Use functional components with hooks
+3. **Imports**: Use path aliases for cross-module imports
+4. **Naming**:
+   - Components: PascalCase
+   - Hooks: camelCase with `use` prefix
+   - Utils: camelCase
+   - Types/Interfaces: PascalCase
+5. **State**: Use Zustand for global state, React hooks for local state
 
 ## CI
 
