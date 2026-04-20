@@ -25,12 +25,14 @@ This project uses [oxlint](https://oxc.rs/docs/guide/usage/linter.html) for fast
 **Configuration**: `.oxlintrc.json`
 
 **Scripts**:
+
 ```bash
 npm run lint      # Check for linting issues
 npm run lint:fix  # Auto-fix linting issues
 ```
 
 **Enabled plugins**:
+
 - `import` - Import/export rules
 - `typescript` - TypeScript-specific rules
 - `react` - React-specific rules
@@ -42,6 +44,7 @@ This project uses [oxfmt](https://oxc.rs/docs/guide/usage/formatter.html) for fa
 **Configuration**: `.oxfmt.json`
 
 **Key settings**:
+
 - Semicolons: enabled
 - Single quotes: disabled (use double quotes)
 - Tab width: 2 spaces
@@ -49,6 +52,7 @@ This project uses [oxfmt](https://oxc.rs/docs/guide/usage/formatter.html) for fa
 - Print width: 100
 
 **Scripts**:
+
 ```bash
 npm run format       # Format all files
 npm run format:check # Check formatting without fixing
@@ -84,7 +88,7 @@ Example: `import { WktPanel } from "@/features/wkt/components/WktPanel"`
 1. **TypeScript**: Use strict typing, avoid `any`
 2. **React**: Use functional components with hooks
 3. **Imports**: Use path aliases for cross-module imports
-4. **Naming**: 
+4. **Naming**:
    - Components: PascalCase
    - Hooks: camelCase with `use` prefix
    - Utils: camelCase

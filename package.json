@@ -4,13 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "lint": "oxlint --config .oxlintrc.json",
-    "lint:fix": "oxlint --config .oxlintrc.json --fix",
-    "format": "oxfmt --config .oxfmt.json",
-    "format:check": "oxfmt --config .oxfmt.json --check"
+    "dev": "vp dev",
+    "build": "vp build",
+    "check": "vp check",
+    "preview": "vp preview"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
@@ -29,9 +26,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/terraformer__wkt": "^2.0.3",
     "@vitejs/plugin-react": "^6.0.1",
-    "oxfmt": "^0.44.0",
-    "oxlint": "^1.59.0",
     "typescript": "~6.0.2",
-    "vite": "^8.0.4"
+    "vite-plus": "^0.1.16"
   }
 }
